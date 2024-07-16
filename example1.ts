@@ -1,5 +1,5 @@
-let a = "hello"
-let b: boolean = false
+let a = "hello" // 묵시적 타입 설정 (타입 추론)
+let b: boolean = false // 명시적 타입 설정
 
 b = true
 
