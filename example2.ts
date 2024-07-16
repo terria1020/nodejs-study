@@ -26,3 +26,30 @@ const player3: Player = {
 if (player3.age > 3) {
     // 옵셔널은 값이 있는지부터 확인해야 오류가 나지 않음
 }
+
+// Player 타입이 아닌, {name: string} 구조를 가지는 무명의 객체 타입을 반환한다고만 아는 함수
+function playerMaker(name: string) {
+    return {
+        name: name,
+
+    }
+}
+
+const test = playerMaker("hello")
+test.age = 12 // 오류
+
+// Player 타입을 명시적으로 반환할거라는 것을 알고 있음
+function playerMakerWithoutAge(name: string) : Player {
+    return {
+        name: name,
+
+    }
+}
+
+const test2 = playerMakerWithoutAge("hello")
+test2.age = 12 // 오류 발생 x
+
+
+
+
+
