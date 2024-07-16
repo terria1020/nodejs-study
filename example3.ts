@@ -20,3 +20,8 @@ numbers.map(a => {
 const t1: [string, number, boolean] = ["hello", 1, false]
 const t2: [string, number, boolean] = ["hello", 1, 2] // 숫자 타입이 와서 에러
 const t3: [string, number, boolean] = ["hello", 1] // 개수가 맞지 않아 에러
+
+t1[0] = "world" // 배열 요소 사용
+
+const t4: readonly [string, number] = ["hello", 12]
+t4[1] = 32 // readonly 이므로 수정 불가능
