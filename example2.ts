@@ -50,6 +50,17 @@ const test2 = playerMakerWithoutAge("hello")
 test2.age = 12 // 오류 발생 x
 
 
+const playerMaker2 = (name: string) => {
+    name
+}
 
+const test3 = playerMaker2("hello")
+test3.age = 12 // 오류
 
+const playerMaker3 = (name: string) : Player => ({
+    name
+}) // 왜 ({}) 이런식으로 쓸까 ?
+
+const test4 = playerMaker3("hello")
+test4.age = 12 // 오류 발생 x 
 
