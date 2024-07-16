@@ -25,3 +25,7 @@ const player3: {
     name: "안녕하세요"
 }
 // 물음표 기호 추가 시 타입을 age?: number | undefined 라고 표기하고 있고, 오류가 사라짐
+
+if (player3.age > 3) {
+    // 옵셔널은 값이 있는지부터 확인해야 오류가 나지 않음
+}
