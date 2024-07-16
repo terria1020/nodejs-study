@@ -17,3 +17,11 @@ const player2: {
 }
 
 // 오류가 남
+
+const player3: {
+    name: string,
+    age?: number
+} = {
+    name: "안녕하세요"
+}
+// 물음표 기호 추가 시 타입을 age?: number | undefined 라고 표기하고 있고, 오류가 사라짐
