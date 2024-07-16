@@ -20,7 +20,7 @@ let AppController = class AppController {
         return this.appService.getHello();
     }
     foo() {
-        return 'hello';
+        return this.appService.getHi();
     }
 };
 exports.AppController = AppController;
