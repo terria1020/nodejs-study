@@ -10,7 +10,10 @@ app.get("/", (req, res) => {
         "Content-Type": "application/json"
     })
 
-    res.end("{\"hello\": \"world\"}")
+    res.json({
+        "hello": "world"
+    })
+    // res.end("{\"hello\": \"world\"}")
 });
 
 app.listen(port, () => {
