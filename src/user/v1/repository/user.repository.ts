@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReqRegisterDto } from '../dto/req/reqRegister.dto';
+import { ReqUpdateDto } from '../dto/req/reqUpdate.dto';
 
 @Injectable()
 export class UserRepository {
@@ -20,6 +21,21 @@ export class UserRepository {
     const users = await this.prisma.user.findMany();
 
     return users;
+  }
+
+  async updateUser(userId: number, dto: ReqUpdateDto) {
+    this.prisma.$transaction([
+      this.prisma.user.update({
+        where: {
+          user_id: userId,
+        },
+        data: {
+          name: dto.name,
+          email: dto.email,
+          address: dto.address,
+        },
+      }),
+    ]);
   }
 
   async createUser(dto: ReqRegisterDto) {

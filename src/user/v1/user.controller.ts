@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { ReqRegisterDto } from './dto/req/reqRegister.dto';
 import { UserService } from './user.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResAllUsersDto } from './dto/res/resAllUsers.dto';
+import { ReqUpdateDto } from './dto/req/reqUpdate.dto';
 
 @Controller({
   path: 'api/v1/users',
@@ -23,7 +33,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @Get(':userId')
+  @Get('/:userId')
   @ApiOperation({
     summary: '특정 사용자 조회',
     description: '특정 사용자 조회 API',
@@ -33,6 +43,22 @@ export class UserController {
   })
   getUser(@Param('userId') userId: number) {
     return this.userService.getUser(userId);
+  }
+
+  @Patch('/:userId')
+  @ApiOperation({
+    summary: '사용자 정보 수정',
+    description: '사용자 정보 수정 API',
+  })
+  updateUser(@Param('userId') userId: number, @Body() dto: ReqUpdateDto) {
+    Logger.log(`userId: ${userId}`);
+    Logger.log(`dto: ${dto.name}`);
+    Logger.log(`dto: ${dto.address}`);
+    Logger.log(`dto: ${dto.email}`);
+    this.userService.updateUser(userId, dto);
+    return {
+      message: 'success',
+    };
   }
 
   @Post('/register')

@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from './repository/user.repository';
 import { ReqRegisterDto } from './dto/req/reqRegister.dto';
 import { ResAllUsersDto } from './dto/res/resAllUsers.dto';
+import { ReqUpdateDto } from './dto/req/reqUpdate.dto';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,14 @@ export class UserService {
     );
 
     return usersDto;
+  }
+
+  updateUser(userId: number, dto: ReqUpdateDto) {
+    Logger.log(`userId: ${userId}`);
+    Logger.log(`dto: ${dto.name}`);
+    Logger.log(`dto: ${dto.address}`);
+    Logger.log(`dto: ${dto.email}`);
+    this.userRepository.updateUser(userId, dto);
   }
 
   async register(dto: ReqRegisterDto) {
