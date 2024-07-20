@@ -25,9 +25,7 @@ export class UserService {
 
   updateUser(userId: number, dto: ReqUpdateDto) {
     Logger.log(`userId: ${userId}`);
-    Logger.log(`dto: ${dto.name}`);
-    Logger.log(`dto: ${dto.address}`);
-    Logger.log(`dto: ${dto.email}`);
+    Logger.log(`dto: ${JSON.stringify(dto)}`);
     this.userRepository.updateUser(userId, dto);
   }
 

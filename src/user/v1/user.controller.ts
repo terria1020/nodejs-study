@@ -53,9 +53,7 @@ export class UserController {
   })
   updateUser(@Param('userId') userId: number, @Body() dto: ReqUpdateDto) {
     Logger.log(`userId: ${userId}`);
-    Logger.log(`dto: ${dto.name}`);
-    Logger.log(`dto: ${dto.address}`);
-    Logger.log(`dto: ${dto.email}`);
+    Logger.log(`dto: ${JSON.stringify(dto)}`);
     this.userService.updateUser(userId, dto);
     return {
       message: 'success',
