@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Injectable,
-  Logger,
-  Param,
-  Post,
-} from '@nestjs/common';
-import { PrismaPromise } from '@prisma/client';
-import { contains } from 'class-validator';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from './repository/user.repository';
 import { ReqRegisterDto } from './dto/req/reqRegister.dto';
 import { ResAllUsersDto } from './dto/res/resAllUsers.dto';
@@ -17,12 +6,20 @@ import { ResAllUsersDto } from './dto/res/resAllUsers.dto';
 @Injectable()
 export class UserService {
   async getUser(userId: number) {
-    return await this.userRepository.findUser(userId);
+    const user = await this.userRepository.findUser(userId);
+
+    return new ResAllUsersDto(user?.user_id, user?.name, user?.email);
   }
   constructor(private readonly userRepository: UserRepository) {}
 
   async getAll(): Promise<ResAllUsersDto[]> {
-    return await this.userRepository.findAll();
+    const users = await this.userRepository.findAll();
+
+    const usersDto: ResAllUsersDto[] = users.map(
+      (user) => new ResAllUsersDto(user.user_id, user.name, user.email),
+    );
+
+    return usersDto;
   }
 
   async register(dto: ReqRegisterDto) {
@@ -35,27 +32,5 @@ export class UserService {
     }
 
     this.userRepository.createUser(dto);
-  }
-}
-@Controller({
-  path: 'api/v1/users',
-})
-export class UserController {
-  constructor(private readonly userService: UserService) {}
-
-  @Get('')
-  getAll() {
-    return this.userService.getAll();
-  }
-
-  @Get(':userId')
-  getUser(@Param('userId') userId: number) {
-    return this.userService.getUser(userId);
-  }
-
-  @Post('/register')
-  userRegister(@Body() dto: ReqRegisterDto) {
-    Logger.log('POST register');
-    return this.userService.register(dto);
   }
 }

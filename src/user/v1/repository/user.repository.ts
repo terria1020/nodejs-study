@@ -1,26 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReqRegisterDto } from '../dto/req/reqRegister.dto';
-import { ResAllUsersDto } from '../dto/res/resAllUsers.dto';
 
 @Injectable()
 export class UserRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
   async findUser(userId: number) {
-    return await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         user_id: userId,
       },
     });
+
+    return user;
   }
 
   async findAll() {
     const users = await this.prisma.user.findMany();
 
-    return users.map((user) => {
-      return new ResAllUsersDto(user.user_id, user.name, user.email);
-    });
+    return users;
   }
-  constructor(private readonly prisma: PrismaService) {}
 
   async createUser(dto: ReqRegisterDto) {
     return await this.prisma.$transaction([
@@ -31,10 +31,11 @@ export class UserRepository {
   }
 
   async findByName(params: { name: string }) {
-    return await this.prisma.user.findMany({
+    const user = await this.prisma.user.findMany({
       where: {
         name: params.name,
       },
     });
+    return user;
   }
 }
