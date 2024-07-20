@@ -42,4 +42,8 @@ export class UserService {
 
     this.userRepository.createUser(dto);
   }
+
+  deleteUser(userId: number) {
+    this.userRepository.deleteUser(userId);
+  }
 }

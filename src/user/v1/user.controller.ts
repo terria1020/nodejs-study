@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -59,6 +60,15 @@ export class UserController {
     return {
       message: 'success',
     };
+  }
+
+  @Delete('/:userId')
+  @ApiOperation({
+    summary: '사용자 삭제',
+    description: '사용자 삭제 API',
+  })
+  deleteUser(@Param('userId') userId: number) {
+    this.userService.deleteUser(userId);
   }
 
   @Post('/register')

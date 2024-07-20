@@ -38,6 +38,16 @@ export class UserRepository {
     ]);
   }
 
+  deleteUser(userId: number) {
+    this.prisma.$transaction([
+      this.prisma.user.delete({
+        where: {
+          user_id: userId,
+        },
+      }),
+    ]);
+  }
+
   async createUser(dto: ReqRegisterDto) {
     return await this.prisma.$transaction([
       this.prisma.user.create({
