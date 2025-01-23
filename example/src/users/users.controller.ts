@@ -12,7 +12,6 @@ import { UserSignupReqDto } from './dto/users.signup.dto';
 import { UsersService } from './users.service';
 import { UsersDto } from './dto/users.get.dto';
 import { UsersUpdateDto } from './dto/users.update.dto';
-import { IsString } from 'class-validator';
 
 @Controller('/api/v1/users')
 export class UsersController {
@@ -25,7 +24,7 @@ export class UsersController {
 
   @Get('/find-by-email')
   async findByEmail(@Query('email') email: string): Promise<UsersDto> {
-    return this.usersService.findUserByEmail(email);
+    return this.usersService.findUserDto(email);
   }
 
   @Put('/accounts/:email')

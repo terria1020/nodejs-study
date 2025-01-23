@@ -28,22 +28,29 @@ export class UsersService {
       throw new HttpException('User already exists', 400);
     }
   }
-  async findUserByEmail(email: string): Promise<UsersDto> {
+
+  async findUserByEmail(email: string): Promise<any> {
     try {
-      const user = await this.prisma.user.findFirstOrThrow({
+      const user = await this.prisma.user.findFirst({
         where: {
           login_email: email,
         },
       });
-      return {
-        id: user.user_id,
-        loginEmail: user.login_email,
-      };
+      return user;
     } catch (error) {
       this.logger.error(error);
       throw new HttpException('User not found', 404);
     }
   }
+
+  async findUserDto(email: string): Promise<UsersDto> {
+    const user = await this.findUserByEmail(email);
+    return {
+      id: user.user_id,
+      loginEmail: user.login_email,
+    };
+  }
+
   async updateUser(
     email: string,
     usersUpdateDto: UsersUpdateDto,
