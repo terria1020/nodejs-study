@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersDto } from './dto/users.get.dto';
 import { UsersUpdateDto } from './dto/users.update.dto';
 import { hashSync } from 'bcrypt';
+import { Request } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -43,8 +44,12 @@ export class UsersService {
     }
   }
 
-  async findUserDto(email: string): Promise<UsersDto> {
+  async findUserDto(req: Request, email: string): Promise<UsersDto> {
+    console.log(`service req userId: ${req.user_id}`);
     const user = await this.findUserByEmail(email);
+    if (!user) {
+      throw new HttpException('User not found', 404);
+    }
     return {
       id: user.user_id,
       loginEmail: user.login_email,

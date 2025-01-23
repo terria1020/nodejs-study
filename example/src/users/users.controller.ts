@@ -7,11 +7,15 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserSignupReqDto } from './dto/users.signup.dto';
 import { UsersService } from './users.service';
 import { UsersDto } from './dto/users.get.dto';
 import { UsersUpdateDto } from './dto/users.update.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Request } from 'express';
 
 @Controller('/api/v1/users')
 export class UsersController {
@@ -22,9 +26,13 @@ export class UsersController {
     return this.usersService.signup(requestDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/find-by-email')
-  async findByEmail(@Query('email') email: string): Promise<UsersDto> {
-    return this.usersService.findUserDto(email);
+  async findByEmail(
+    @Query('email') email: string,
+    @Req() req: Request,
+  ): Promise<UsersDto> {
+    return this.usersService.findUserDto(req, email);
   }
 
   @Put('/accounts/:email')
