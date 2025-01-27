@@ -2,11 +2,14 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
@@ -33,13 +36,15 @@ export class LoginGuard implements CanActivate {
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('1');
     const result = (await super.canActivate(context)) as boolean;
 
     // todo: passport-local의 로직을 구현 한 메소드를 실행
-
+    console.log('3');
     const request = context.switchToHttp().getRequest();
     // 세션 저장
     await super.logIn(request);
+    console.log('6');
     return result;
   }
 }

@@ -1,7 +1,17 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginReqDto } from 'src/dto/register.dto';
 import { Request, Response } from 'express';
+import { AuthenticatedGuard, LocalAuthGuard } from './auth.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -14,5 +24,23 @@ export class AuthController {
     @Res() res: Response,
   ) {
     return await this.authService.login(dto, req, res);
+  }
+}
+
+@Controller('api/v2/auth')
+export class AuthV2Controller {
+  constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(LocalAuthGuard)
+  @Post('/signin')
+  async register(@Body() dto: LoginReqDto, @Req() req: Request) {
+    return await this.authService.loginWithGuard(dto, req);
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Get('/me')
+  async me(@Session() session: Record<string, any>) {
+    console.log(session);
+    return 'me';
   }
 }

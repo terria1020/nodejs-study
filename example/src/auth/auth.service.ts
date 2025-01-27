@@ -10,15 +10,11 @@ import { compareSync } from 'bcrypt';
 import { assert } from 'console';
 import { Request, Response } from 'express';
 import { LoginReqDto } from 'src/dto/register.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   async login(dto: LoginReqDto, @Req() req: Request, @Res() res: Response) {
     const user = await this.validateUser(dto.loginEmail, dto.loginPw);
@@ -32,6 +28,13 @@ export class AuthService {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     });
     res.status(200).send('login success');
+  }
+
+  async loginWithGuard(dto: LoginReqDto, @Req() req: Request) {
+    console.log(7);
+    console.log(req.user, 'loginWithGuard Func()');
+    const { login_pw, ...userInfoNoPassword } = req.user as user;
+    return userInfoNoPassword;
   }
 
   async validateUser(email: string, password: string): Promise<user> {
