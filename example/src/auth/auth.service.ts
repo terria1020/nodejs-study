@@ -5,6 +5,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { user } from '@prisma/client';
 import { compareSync } from 'bcrypt';
 import { assert } from 'console';
@@ -14,7 +15,10 @@ import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async login(dto: LoginReqDto, @Req() req: Request, @Res() res: Response) {
     const user = await this.validateUser(dto.loginEmail, dto.loginPw);
@@ -65,5 +69,14 @@ export class AuthService {
         email: user.login_email,
       }),
     ).toString('base64');
+  }
+
+  createLoginJwt(user: user) {
+    const payload = {
+      sub: user.user_id,
+      id: user.user_id,
+      test: 'hello world1',
+    };
+    return this.jwtService.sign(payload);
   }
 }

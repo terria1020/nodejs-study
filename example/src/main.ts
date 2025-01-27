@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,17 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+  // passport.use(
+  //   new Strategy(
+  //     {
+  //       secretOrKey: 'secret',
+  //       issuer: 'accounts.examplesoft.com',
+  //       audience: 'yoursite.net',
+  //       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  //     },
+  //     null, // todo: implement verify function
+  //   ),
+  // );
   await app.listen(3000);
 }
 bootstrap();

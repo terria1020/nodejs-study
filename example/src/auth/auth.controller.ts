@@ -11,7 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginReqDto } from 'src/dto/register.dto';
 import { Request, Response } from 'express';
-import { AuthenticatedGuard, LocalAuthGuard } from './auth.guard';
+import { AuthenticatedGuard, JwtAuthGuard, LocalAuthGuard } from './auth.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -40,7 +40,18 @@ export class AuthV2Controller {
   @UseGuards(AuthenticatedGuard)
   @Get('/me')
   async me(@Session() session: Record<string, any>) {
-    console.log(session);
-    return 'me';
+    return {
+      jwt: this.authService.createLoginJwt({
+        user_id: null,
+        login_email: session.passport.user.login_email,
+        login_pw: null,
+      }),
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/my')
+  async my() {
+    return 'my';
   }
 }

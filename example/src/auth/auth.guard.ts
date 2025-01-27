@@ -57,3 +57,13 @@ export class AuthenticatedGuard implements CanActivate {
     return request.isAuthenticated();
   }
 }
+
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const result = (await super.canActivate(context)) as boolean;
+    console.log(3);
+    console.log(result, 'JwtAuthGuard');
+    return result;
+  }
+}
