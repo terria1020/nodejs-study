@@ -42,15 +42,16 @@ export class AuthService {
     return null;
   }
 
-  async validateUserCookie(cookie: {
-    id: number;
-    email: string;
-  }): Promise<boolean> {
+  async validateUserCookie(cookie: UserSignInCookie): Promise<boolean> {
     const user = await this.usersService.findUserByEmail(cookie.email);
     if (user.user_id === cookie.id) {
       return true;
     }
     return false;
+  }
+
+  async parseCookie(cookie: string): Promise<UserSignInCookie> {
+    return await JSON.parse(Buffer.from(cookie, 'base64').toString());
   }
 
   createLoginCookie(user: user) {

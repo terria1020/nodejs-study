@@ -45,7 +45,9 @@ export class UsersService {
   }
 
   async findUserDto(req: Request, email: string): Promise<UsersDto> {
-    console.log(`service req userId: ${req.user_id}`);
+    console.log(
+      `service req headers userId: ${req.headers['X-Request-user-id']}`,
+    );
     const user = await this.findUserByEmail(email);
     if (!user) {
       throw new HttpException('User not found', 404);

@@ -14,17 +14,13 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    let userCookie = request.cookies['user'];
-    userCookie = Buffer.from(userCookie, 'base64').toString();
-    userCookie = JSON.parse(userCookie);
+    const userCookie: UserSignInCookie = await this.authService.parseCookie(
+      request.cookies['user'],
+    );
 
     // 쿠키가 유효하면 인증 성공, user_id를 request에 저장
-    if (this.authService.validateUserCookie(userCookie)) {
-      request.user_id = userCookie.id;
-      console.log(request);
-      // request.headers['X-Request-user-id'] = userCookie.user_id;
-
-      console.log(`request.headers: ${JSON.stringify(request.headers)}`);
+    if (await this.authService.validateUserCookie(userCookie)) {
+      request.headers['X-Request-user-id'] = userCookie.id.toString();
       return true;
     }
     return false;
