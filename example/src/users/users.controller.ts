@@ -14,7 +14,7 @@ import { UserSignupReqDto } from './dto/users.signup.dto';
 import { UsersService } from './users.service';
 import { UsersDto } from './dto/users.get.dto';
 import { UsersUpdateDto } from './dto/users.update.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { LoginGuard } from 'src/auth/auth.guard';
 import { Request } from 'express';
 
 @Controller('/api/v1/users')
@@ -26,7 +26,7 @@ export class UsersController {
     return this.usersService.signup(requestDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(LoginGuard)
   @Get('/find-by-email')
   async findByEmail(
     @Query('email') email: string,
