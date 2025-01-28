@@ -11,7 +11,12 @@ import {
 import { AuthService } from './auth.service';
 import { LoginReqDto } from 'src/dto/register.dto';
 import { Request, Response } from 'express';
-import { AuthenticatedGuard, JwtAuthGuard, LocalAuthGuard } from './auth.guard';
+import {
+  AuthenticatedGuard,
+  GoogleGuard,
+  JwtAuthGuard,
+  LocalAuthGuard,
+} from './auth.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -24,6 +29,21 @@ export class AuthController {
     @Res() res: Response,
   ) {
     return await this.authService.login(dto, req, res);
+  }
+
+  @UseGuards(GoogleGuard)
+  @Get('/oauth2/google')
+  async googleLogin() {
+    return 'google login';
+  }
+
+  @Get('/oauth2/google/callback')
+  @UseGuards(GoogleGuard)
+  async googleLoginCallback(@Req() req: Request) {
+    console.log(req);
+    console.log(req.body);
+    return 'success';
+    // return await this.authService.googleLoginCallback(req);
   }
 }
 

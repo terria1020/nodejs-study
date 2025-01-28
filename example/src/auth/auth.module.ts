@@ -7,10 +7,17 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   controllers: [AuthController, AuthV2Controller],
-  providers: [AuthService, LocalStrategy, JwtStrategy, SessionSerializer],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    GoogleStrategy,
+    SessionSerializer,
+  ],
   imports: [
     forwardRef(() => UsersModule),
     PassportModule.register({ session: true }),

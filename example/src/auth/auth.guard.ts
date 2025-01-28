@@ -67,3 +67,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return result;
   }
 }
+
+@Injectable()
+export class GoogleGuard extends AuthGuard('google') {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const result = (await super.canActivate(context)) as boolean;
+    return result;
+  }
+}
